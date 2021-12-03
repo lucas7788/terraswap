@@ -20,7 +20,7 @@ fn proper_initialization() {
     let mut deps = mock_dependencies(&[]);
 
     let msg = InstantiateMsg {
-        terraswap_factory: "terraswapfactory".to_string(),
+        terraswap_factory: vec!["terraswapfactory".to_string()],
     };
 
     let info = mock_info("addr0000", &[]);
@@ -31,7 +31,7 @@ fn proper_initialization() {
     // it worked, let's query the state
     let config: ConfigResponse =
         from_binary(&query(deps.as_ref(), mock_env(), QueryMsg::Config {}).unwrap()).unwrap();
-    assert_eq!("terraswapfactory", config.terraswap_factory.as_str());
+    assert_eq!("terraswapfactory", config.terraswap_factory.get(0).unwrap());
 }
 
 #[test]
@@ -43,7 +43,7 @@ fn execute_swap_operations() {
     )]);
 
     let msg = InstantiateMsg {
-        terraswap_factory: "terraswapfactory".to_string(),
+        terraswap_factory: vec!["terraswapfactory".to_string()],
     };
 
     let info = mock_info("addr0000", &[]);
@@ -77,6 +77,7 @@ fn execute_swap_operations() {
                 ask_asset_info: AssetInfo::Token {
                     contract_addr: "asset0001".to_string(),
                 },
+                factory_index: 0,
             },
             SwapOperation::TerraSwap {
                 offer_asset_info: AssetInfo::Token {
@@ -85,6 +86,7 @@ fn execute_swap_operations() {
                 ask_asset_info: AssetInfo::NativeToken {
                     denom: "uluna".to_string(),
                 },
+                factory_index: 0,
             },
             SwapOperation::TerraSwap {
                 offer_asset_info: AssetInfo::NativeToken {
@@ -93,6 +95,7 @@ fn execute_swap_operations() {
                 ask_asset_info: AssetInfo::Token {
                     contract_addr: "asset0002".to_string(),
                 },
+                factory_index: 0,
             },
         ],
         minimum_receive: Some(Uint128::from(1000000u128)),
@@ -114,7 +117,7 @@ fn execute_swap_operations() {
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -127,10 +130,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::Token {
                             contract_addr: "asset0001".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -143,10 +147,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::NativeToken {
                             denom: "uluna".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -159,10 +164,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::Token {
                             contract_addr: "asset0002".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: Some("addr0000".to_string()),
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -175,7 +181,7 @@ fn execute_swap_operations() {
                     minimum_receive: Uint128::from(1000000u128),
                     receiver: "addr0000".to_string(),
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
         ]
     );
@@ -196,6 +202,7 @@ fn execute_swap_operations() {
                     ask_asset_info: AssetInfo::Token {
                         contract_addr: "asset0001".to_string(),
                     },
+                    factory_index: 0,
                 },
                 SwapOperation::TerraSwap {
                     offer_asset_info: AssetInfo::Token {
@@ -204,6 +211,7 @@ fn execute_swap_operations() {
                     ask_asset_info: AssetInfo::NativeToken {
                         denom: "uluna".to_string(),
                     },
+                    factory_index: 0,
                 },
                 SwapOperation::TerraSwap {
                     offer_asset_info: AssetInfo::NativeToken {
@@ -212,12 +220,13 @@ fn execute_swap_operations() {
                     ask_asset_info: AssetInfo::Token {
                         contract_addr: "asset0002".to_string(),
                     },
+                    factory_index: 0,
                 },
             ],
             minimum_receive: None,
             to: Some("addr0002".to_string()),
         })
-        .unwrap(),
+            .unwrap(),
     });
 
     let info = mock_info("asset0000", &[]);
@@ -235,7 +244,7 @@ fn execute_swap_operations() {
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -248,10 +257,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::Token {
                             contract_addr: "asset0001".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -264,10 +274,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::NativeToken {
                             denom: "uluna".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: None,
                 })
-                .unwrap(),
+                    .unwrap(),
             })),
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: MOCK_CONTRACT_ADDR.to_string(),
@@ -280,10 +291,11 @@ fn execute_swap_operations() {
                         ask_asset_info: AssetInfo::Token {
                             contract_addr: "asset0002".to_string(),
                         },
+                        factory_index: 0,
                     },
                     to: Some("addr0002".to_string()),
                 })
-                .unwrap(),
+                    .unwrap(),
             }))
         ]
     );
@@ -293,7 +305,7 @@ fn execute_swap_operations() {
 fn execute_swap_operation() {
     let mut deps = mock_dependencies(&[]);
     let msg = InstantiateMsg {
-        terraswap_factory: "terraswapfactory".to_string(),
+        terraswap_factory: vec!["terraswapfactory".to_string()],
     };
 
     let info = mock_info("addr0000", &[]);
@@ -338,7 +350,7 @@ fn execute_swap_operation() {
                 denom: "uusd".to_string(),
                 amount: Uint128::from(1000000u128),
             },
-            "uluna".to_string()
+            "uluna".to_string(),
         ))],
     );
 
@@ -361,7 +373,7 @@ fn execute_swap_operation() {
                 denom: "uusd".to_string(),
                 amount: Uint128::from(952380u128), // deduct tax
             },
-            "uluna".to_string()
+            "uluna".to_string(),
         ))],
     );
     deps.querier
@@ -379,6 +391,7 @@ fn execute_swap_operation() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uusd".to_string(),
             },
+            factory_index: 0,
         },
         to: Some("addr0000".to_string()),
     };
@@ -404,9 +417,9 @@ fn execute_swap_operation() {
                     max_spread: None,
                     to: Some("addr0000".to_string()),
                 })
-                .unwrap()
+                    .unwrap(),
             })
-            .unwrap()
+                .unwrap(),
         }))]
     );
 }
@@ -416,7 +429,7 @@ fn query_buy_with_routes() {
     let mut deps = mock_dependencies(&[]);
 
     let msg = InstantiateMsg {
-        terraswap_factory: "terraswapfactory".to_string(),
+        terraswap_factory: vec!["terraswapfactory".to_string()],
     };
 
     let info = mock_info("addr0000", &[]);
@@ -447,6 +460,7 @@ fn query_buy_with_routes() {
                 ask_asset_info: AssetInfo::Token {
                     contract_addr: "asset0000".to_string(),
                 },
+                factory_index: 0,
             },
             SwapOperation::TerraSwap {
                 offer_asset_info: AssetInfo::Token {
@@ -455,6 +469,7 @@ fn query_buy_with_routes() {
                 ask_asset_info: AssetInfo::NativeToken {
                     denom: "uluna".to_string(),
                 },
+                factory_index: 0,
             },
         ],
     };

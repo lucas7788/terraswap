@@ -34,7 +34,7 @@ mod test {
         store_config(
             &mut deps.storage,
             &Config {
-                terraswap_factory: deps.api.addr_canonicalize("addr0000").unwrap(),
+                terraswap_factory: vec![deps.api.addr_canonicalize("addr0000").unwrap()],
             },
         )
         .unwrap();

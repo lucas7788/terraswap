@@ -382,7 +382,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -391,7 +391,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uluna".to_string(),
             },
-            factory_index
+            factory_index:0,
         }
     ])
     .is_ok());
@@ -409,7 +409,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -418,7 +418,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uluna".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::NativeToken {
@@ -427,7 +427,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0002".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
     ])
     .is_ok());
@@ -445,7 +445,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -454,7 +454,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uaud".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::NativeToken {
@@ -463,7 +463,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0002".to_string(),
             },
-            factory_index
+            factory_index:0,
         },
     ])
     .is_err());
