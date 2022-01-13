@@ -19,6 +19,17 @@ The contract will check whether the resulting token is swapped into one token.
 
 ### Example
 
+合约初始化
+测试网
+```json
+{"terraswap_factory":["terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf"]}
+```
+
+主网
+```json
+{"terraswap_factory":["terra1ulgw0td86nvs4wtpsc80thv6xelk76ut7a7apj", "terra16hdjuvghcumu6prg22cdjl96ptuay6r0hc6yns"]}
+```
+
 Swap KRT => UST => mABNB
 ```
 {

@@ -59,14 +59,10 @@ pub fn execute_swap_operation(
         SwapOperation::TerraSwap {
             offer_asset_info,
             ask_asset_info,
-            factory_index,
+            factory_address,
         } => {
-            let config: Config = CONFIG.load(deps.as_ref().storage)?;
             let terraswap_factory = deps.api.addr_humanize(
-                config
-                    .terraswap_factory
-                    .get(factory_index as usize)
-                    .unwrap(),
+                &deps.api.addr_canonicalize(factory_address.as_str()).unwrap(),
             )?;
             let pair_info: PairInfo = query_pair_info(
                 &deps.querier,

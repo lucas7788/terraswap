@@ -28,18 +28,6 @@ pub fn instantiate(
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> StdResult<Response> {
-    let factorys = msg
-        .terraswap_factory
-        .iter()
-        .map(|x| deps.api.addr_canonicalize(x).unwrap())
-        .collect();
-    CONFIG.save(
-        deps.storage,
-        &Config {
-            terraswap_factory: factorys,
-        },
-    )?;
-
     Ok(Response::default())
 }
 
@@ -276,7 +264,7 @@ fn simulate_swap_operations(
             SwapOperation::TerraSwap {
                 offer_asset_info,
                 ask_asset_info,
-                factory_index,
+                factory_address,
             } => {
                 let terraswap_factory = deps.api.addr_humanize(
                     config
@@ -347,7 +335,7 @@ fn assert_operations(operations: &[SwapOperation]) -> StdResult<()> {
             SwapOperation::TerraSwap {
                 offer_asset_info,
                 ask_asset_info,
-                factory_index: _,
+                factory_address: _,
             } => (offer_asset_info.clone(), ask_asset_info.clone()),
         };
 
@@ -382,7 +370,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -391,7 +379,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uluna".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         }
     ])
     .is_ok());
@@ -409,7 +397,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -418,7 +406,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uluna".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::NativeToken {
@@ -427,7 +415,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0002".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
     ])
     .is_ok());
@@ -445,7 +433,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0001".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::Token {
@@ -454,7 +442,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::NativeToken {
                 denom: "uaud".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
         SwapOperation::TerraSwap {
             offer_asset_info: AssetInfo::NativeToken {
@@ -463,7 +451,7 @@ fn test_invalid_operations() {
             ask_asset_info: AssetInfo::Token {
                 contract_addr: "asset0002".to_string(),
             },
-            factory_index:0,
+            factory_address:"".to_string(),
         },
     ])
     .is_err());
