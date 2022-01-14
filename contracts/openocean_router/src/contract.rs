@@ -197,25 +197,11 @@ fn assert_minium_receive(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::Config {} => to_binary(&query_config(deps)?),
         QueryMsg::SimulateSwapOperations {
             offer_amount,
             operations,
         } => to_binary(&simulate_swap_operations(deps, offer_amount, operations)?),
     }
-}
-
-pub fn query_config(deps: Deps) -> StdResult<ConfigResponse> {
-    let state = CONFIG.load(deps.storage)?;
-    let factorys = state
-        .terraswap_factory
-        .iter()
-        .map(|x| deps.api.addr_humanize(x).unwrap().to_string())
-        .collect();
-    let resp = ConfigResponse {
-        terraswap_factory: factorys,
-    };
-    Ok(resp)
 }
 
 fn simulate_swap_operations(
@@ -266,12 +252,7 @@ fn simulate_swap_operations(
                 ask_asset_info,
                 factory_address,
             } => {
-                let terraswap_factory = deps.api.addr_humanize(
-                    config
-                        .terraswap_factory
-                        .get(factory_index as usize)
-                        .unwrap(),
-                )?;
+                let terraswap_factory = deps.api.addr_humanize(&deps.api.addr_canonicalize(factory_address.as_str()).unwrap())?;
                 let pair_info: PairInfo = query_pair_info(
                     &deps.querier,
                     terraswap_factory.clone(),

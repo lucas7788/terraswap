@@ -75,7 +75,6 @@ pub enum Cw20HookMsg {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    Config {},
     SimulateSwapOperations {
         offer_amount: Uint128,
         operations: Vec<SwapOperation>,
