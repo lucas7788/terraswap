@@ -8,7 +8,6 @@ use cosmwasm_std::{
 
 use crate::operations::execute_swap_operation;
 use crate::querier::compute_tax;
-use crate::state::{Config, CONFIG};
 
 use cw20::Cw20ReceiveMsg;
 use std::collections::HashMap;
@@ -209,7 +208,6 @@ fn simulate_swap_operations(
     offer_amount: Uint128,
     operations: Vec<SwapOperation>,
 ) -> StdResult<SimulateSwapOperationsResponse> {
-    let config: Config = CONFIG.load(deps.storage)?;
     let terra_querier = TerraQuerier::new(&deps.querier);
 
     let operations_len = operations.len();
